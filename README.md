@@ -24,9 +24,13 @@ pip install -r requirements.txt
 playwright install
 ```
 Make a new folder with your name for your custom scripts so you can make a pull request to share them. 
-Import and initialize some constants. 
-```
+Import and initialize some constants.
+You have to modify the sys path to import from the parent directory.
+```python
 from playwright.sync_api import sync_playwright
+import sys, os
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.append(parent_dir)
 from ccu_autopilot import AutoPilot
 
 IP_ADDR = "192.168.420.69"
