@@ -19,7 +19,7 @@ class AutoPilot:
   
   def open_osd(self):
     "From the home page, opens the OSD pop-up."
-    button = self.page.get_by_text("About")
+    button = self.page.get_by_text("OSD Menu")
     button.click()
 
   def not_initialized(self):
