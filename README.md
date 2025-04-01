@@ -39,7 +39,7 @@ PW = "password"
 ```
 Initialize the playwright session with a context manager. **Note that at least slow_mo=50 will probably be required.**
 Set headless = False if you want to see the browser page.
-```
+```python
 with sync_playwright() as p:
   browser = p.chromium.launch(slow_mo=50, headless=False)
   context = browser.new_context(
@@ -50,7 +50,7 @@ with sync_playwright() as p:
   page.goto(f"http://{IP_ADDR}")
 ```
 Pass the page to an instance of AutoPilot at the top of your script. Use ap methods when useful, or use playwright normally.
-```
+```python
   ap = AutoPilot(page)
 
   ap.open_osd()
