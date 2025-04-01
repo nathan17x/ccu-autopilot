@@ -1,13 +1,7 @@
 from playwright.sync_api import sync_playwright
-import sys
-import os
-
+import sys, os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-
 sys.path.append(parent_dir)
-
-print(sys.path)
-
 from ccu_autopilot import AutoPilot
 
 IP_ADDR = "10.49.6.23"
