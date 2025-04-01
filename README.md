@@ -3,28 +3,38 @@
 Helper functions for navigating the Sony HDCU5500 OSD menu with playwright for python.
 
 ### Important note!
-I haven't found a reliable way to register when js updates the DOM from incoming websocket data. I have found ways to listen to incoming websocket data, so I have some ideas abrewin.
+I haven't found a reliable way to register when js updates the DOM from incoming websocket data. I have found ways to listen to incoming websocket data, so I have some ideas.
 
-For now, you can just use slow_mo = 50, if not 70 or 100. It's slow, but reliable.
+For now, you can just use slow_mo = 50, if not 70 or 100. It's kinda slow, but reliable.
 
 It takes ~3 minutes to set the bar characters with slow_mo = 100. You can do them all in parallel.
 
 ## Quickstart
-Install playwright and it's dependencies. It's a chunky package, highly recommend venv.
+Clone this repository
 ```
-pip install playwright
+git clone https://git.nmahoney.dev/nathan-public/ccu-autopilot.git
+```
+Create a venv and install dependencies
+```
+python -m venv venv
+source venv/bin/activate # bash
+venv/scripts/activate.ps1 # powershell
+
+pip install -r requirements.txt
 playwright install
 ```
-Import and initialize some constants.
+Make a new folder with your name for your custom scripts so you can make a pull request to share them. 
+Import and initialize some constants. 
 ```
 from playwright.sync_api import sync_playwright
-from ccu_ap import AutoPilot
+from ccu_autopilot import AutoPilot
 
 IP_ADDR = "10.72.6.21"
 USER = "admin"
 PW = "hdcu5500"
 ```
-Initialize the playwright session with a context manager. **Note that slow_mo=50 will probably be required.**
+Initialize the playwright session with a context manager. **Note that at least slow_mo=50 will probably be required.**
+Set headless = False if you want to see the browser page.
 ```
 with sync_playwright() as p:
   browser = p.chromium.launch(slow_mo=50, headless=False)
