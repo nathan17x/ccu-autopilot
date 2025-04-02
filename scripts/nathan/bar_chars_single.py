@@ -8,8 +8,29 @@ IP_ADDR = "10.49.6.23"
 USER = "admin"
 PW = "hdcu5500"
 
+def create_border_block(para: str):
+  para_lines = para.splitlines()
+  if len(para_lines) > 14:
+    raise Exception("Paragraph inside border cannot be longer than 14 lines")
+  horizontal_border = "##################################\n"
+  output = ""
+  output += horizontal_border
+  for line in para_lines:
+    if len(line) > 32:
+      raise Exception("Line inside border cannot be longer than 32 chars")
+    output += f"#{line.ljust(32)}#\n"
+  for _ in range(14 - len(para_lines)):
+    output += f"{"#".ljust(33)}#\n"
+  output += horizontal_border
+  return output
+
+para = """test123
+GCV Centennial
+!!!
+"""
+
 with sync_playwright() as p:
-  browser = p.chromium.launch(slow_mo=100, headless=False)
+  browser = p.chromium.launch(slow_mo=100, headless=True)
   context = browser.new_context(
     http_credentials={"username": USER, "password": PW},
     viewport={"height": 1080, "width": 1920}
@@ -19,8 +40,12 @@ with sync_playwright() as p:
 
   ap = AutoPilot(page)
 
-  ap.open_osd()
+  ap.bar_char_initialize()
 
-  page.wait_for_timeout(1000)
+  ap.bar_char_type_paragraph(create_border_block(para))
+  
+
+
+
 
 

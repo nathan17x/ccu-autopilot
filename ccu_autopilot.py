@@ -72,11 +72,39 @@ class AutoPilot:
 
   def get_osd_bar_char_line_number(self):
     """
-    This is specifically for using the OSD keyboard to set bar characters.
+    This is specifically for using the OSD keyboard to set bar characters. Returns as an integer.
     """
     if self.not_initialized(): return
     cursorline = self.page.locator(".cursorLine")
-    return cursorline.locator("span").first.inner_text()
+    line_num_string = cursorline.locator("span").first.inner_text()
+    if line_num_string == " ":
+      line_num_string = 17
+    return int(line_num_string)
+  
+  def bar_char_scroll_to_line(self, target_line: int):
+    """
+    This is specifically for using the OSD keyboard to set bar characters.
+    """
+    if self.not_initialized(): return
+    current_line = self.get_osd_bar_char_line_number()
+    if target_line > current_line:
+      self.down(target_line - current_line)
+    elif target_line < current_line:
+      self.up(current_line - target_line)
+
+  def bar_char_initialize(self):
+    """
+    Run this after opening the webpage. It will open the OSD, navigate to bar char page, clear all lines, and scroll back to the top of the bar char page.
+    """
+    self.open_osd()
+    self.return_to_main_menu()
+    self.verticle_scroll_to("VIDEO/MONITOR")
+    self.find_page_by_text("V02TOP")
+    self.bar_char_scroll_to_line(16)
+    self.down()
+    self.enter()
+    self.enter()
+    self.down(3)
   
   def verticle_scroll_to(self, text):
     """
@@ -168,7 +196,7 @@ class AutoPilot:
             self.up()
     self.enter()
 
-  def bar_char_type_letter(self, letter):
+  def bar_char_type_letter(self, letter: str):
     """
     For bar characters.
     Begins from line edit mode (keyboard visible, while up/down navigates from character to character)
@@ -186,17 +214,35 @@ class AutoPilot:
         self.up()
     self.enter()
 
-  def bar_char_type_line(self, line):
+  def bar_char_type_line(self, line: str):
     """
     For bar characters.
     Begins from line selection mode (no keyboard visible, up/down navigates from line to line)
     """
     self.enter()
-    for char in list(line):
-      self.type_letter(char)
+
+    line_list = list(line)
+    if (len(line_list) > 34):
+      raise Exception("Attempted to write bar char line that was too long (max 34 chars)")
+    for char in line_list:
+      self.bar_char_type_letter(char)
     for _ in range(36):
       self.down()
     self.enter()
+
+  def bar_char_type_paragraph(self, paragraph: str):
+    """
+    For bar characters.
+    Begins from line selection mode (no keyboard visible, up/down navigates from line to line).
+    """
+    self.bar_char_scroll_to_line(1)
+    paragraph_list = paragraph.splitlines()
+    if (len(paragraph_list) > 16):
+      raise Exception("Attempted to write bar char paragraph longer than 16 lines")
+    for line in paragraph_list:
+      self.bar_char_type_line(line)
+      self.down()
+    self.cancel(3)
 
 
 
