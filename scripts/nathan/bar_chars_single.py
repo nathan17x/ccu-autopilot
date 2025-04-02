@@ -18,7 +18,7 @@ def create_border_block(para: str):
   for line in para_lines:
     if len(line) > 32:
       raise Exception("Line inside border cannot be longer than 32 chars")
-    output += f"#{line.ljust(32)}#\n"
+    output += f"# {line.ljust(31)}#\n"
   for _ in range(14 - len(para_lines)):
     output += f"{"#".ljust(33)}#\n"
   output += horizontal_border
@@ -29,23 +29,22 @@ GCV Centennial
 !!!
 """
 
-with sync_playwright() as p:
-  browser = p.chromium.launch(slow_mo=100, headless=True)
-  context = browser.new_context(
-    http_credentials={"username": USER, "password": PW},
-    viewport={"height": 1080, "width": 1920}
-  )
-  page = context.new_page()
-  page.goto(f"http://{IP_ADDR}")
+def write_ccu_bar_char(para: str, ip_addr: str = IP_ADDR, user: str = USER, pw: str = PW):
+  with sync_playwright() as p:
+    browser = p.chromium.launch(slow_mo=100, headless=True)
+    context = browser.new_context(
+      http_credentials={"username": USER, "password": PW},
+      viewport={"height": 1080, "width": 1920}
+    )
+    page = context.new_page()
+    page.goto(f"http://{IP_ADDR}")
 
-  ap = AutoPilot(page)
+    ap = AutoPilot(page)
 
-  ap.bar_char_initialize()
+    ap.bar_char_initialize()
 
-  ap.bar_char_type_paragraph(create_border_block(para))
+    ap.bar_char_type_paragraph(create_border_block(para))
   
-
-
-
-
+if __name__ == "__main__":
+  write_ccu_bar_char(para)
 
