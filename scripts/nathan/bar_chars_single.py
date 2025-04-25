@@ -29,15 +29,15 @@ GCV Centennial
 !!!
 """
 
-def write_ccu_bar_char(para: str, ip_addr: str = IP_ADDR, user: str = USER, pw: str = PW):
+def write_ccu_bar_char(para: str, ip_addr: str, user: str = USER, pw: str = PW):
   with sync_playwright() as p:
-    browser = p.chromium.launch(slow_mo=100, headless=True)
+    browser = p.chromium.launch(slow_mo=100, headless=False)
     context = browser.new_context(
       http_credentials={"username": USER, "password": PW},
       viewport={"height": 1080, "width": 1920}
     )
     page = context.new_page()
-    page.goto(f"http://{IP_ADDR}")
+    page.goto(f"http://{ip_addr}")
 
     ap = AutoPilot(page)
 
