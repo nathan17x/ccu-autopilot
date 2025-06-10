@@ -38,6 +38,8 @@ def test_target(para, ip_addr):
     ap = AutoPilot(page)
     ap.open_osd()
     ap.return_to_main_menu()
+    ap.bar_char_initialize()
+    ap.bar_char_type_paragraph(para)
 
 threads = []
 
