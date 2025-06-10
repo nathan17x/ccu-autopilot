@@ -40,6 +40,7 @@ def test_target(para, ip_addr):
     ap.return_to_main_menu()
     ap.bar_char_initialize()
     ap.bar_char_type_paragraph(para)
+    ap.return_to_main_menu()
 
 threads = []
 
