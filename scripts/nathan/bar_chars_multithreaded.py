@@ -27,7 +27,7 @@ for ccu in ccu_list:
 
 def test_target(para, ip_addr):
   with sync_playwright() as p:
-    browser = p.chromium.launch(slow_mo=100)
+    browser = p.chromium.launch(slow_mo=100, headless=False)
     context = browser.new_context(
       http_credentials={"username": 'admin', "password": 'hdcu5500'},
       viewport={"height": 1080, "width": 1920}
@@ -36,8 +36,6 @@ def test_target(para, ip_addr):
     page.goto(f"http://{ip_addr}")
 
     ap = AutoPilot(page)
-    ap.open_osd()
-    ap.return_to_main_menu()
     ap.bar_char_initialize()
     ap.bar_char_type_paragraph(para)
     ap.return_to_main_menu()
