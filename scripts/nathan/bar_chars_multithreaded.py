@@ -5,8 +5,9 @@ from playwright.sync_api import sync_playwright
 import sys, os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(parent_dir)
+print(sys.path)
 from ccu_autopilot import AutoPilot
-df = pd.read_csv('all_ccu.csv', header=None)
+df = pd.read_csv('fifa_wc_26_ccu4,15,16.csv', header=None)
 df = df.fillna(" ")
 
 ccu_list = df.values.tolist()

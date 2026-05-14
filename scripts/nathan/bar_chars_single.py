@@ -4,7 +4,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(parent_dir)
 from ccu_autopilot import AutoPilot
 
-IP_ADDR = "10.49.6.23"
+IP_ADDR = "172.26.11.111"
 USER = "admin"
 PW = "hdcu5500"
 
@@ -24,9 +24,15 @@ def create_border_block(para: str):
   output += horizontal_border
   return output
 
-para = """test123
-GCV Centennial
-!!!
+para = """FWC26
+PHL-11-K
+IBC+1
+MC 1
+CCU01_HDLA
+
+P02 : C1
+
+P10 : C1
 """
 
 def write_ccu_bar_char(para: str, ip_addr: str, user: str = USER, pw: str = PW):
@@ -43,8 +49,10 @@ def write_ccu_bar_char(para: str, ip_addr: str, user: str = USER, pw: str = PW):
 
     ap.bar_char_initialize()
 
-    ap.bar_char_type_paragraph(create_border_block(para))
+    #ap.bar_char_type_paragraph(create_border_block(para))
+    
+    ap.bar_char_type_paragraph(para)
   
 if __name__ == "__main__":
-  write_ccu_bar_char(para)
+  write_ccu_bar_char(para, IP_ADDR, USER, PW)
 
